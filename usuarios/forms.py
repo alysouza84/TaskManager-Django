@@ -1,11 +1,13 @@
 from django import forms
 from .models import Task
 
+
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ['title', 'description', 'status']
-        
+        fields = ['title', 'description', 'status', 'user']
+
+
 class TaskFilterForm(forms.Form):
     status = forms.ChoiceField(
         choices=[('', 'Todos')] + Task.STATUS_CHOICES,
