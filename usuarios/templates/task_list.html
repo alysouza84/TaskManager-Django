@@ -8,25 +8,26 @@
 </head>
 <body>
     <h1>Suas Tarefas</h1>
-    
-    
+
+
     <a href="{% url 'task_create' %}">Criar Nova Tarefa</a>
+    <a href="{% url 'dashboard' %}">Dashboard</a>
+    <a href="{% url 'logout' %}">Logout</a> 
     <br>
-    
+
     <ul>
         {% for task in tasks %}
-        <li>
-            <strong>{{ task.title }}</strong> - Status: {{ task.status }}<br>
-            {{ task.description }}<br>
-            <a href="{% url 'task_update' task.pk %}">Editar</a>
-            <form action="{% url 'task_delete' task.pk %}" method="post" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit">Deletar</button>
-            </form>
-        </li>
+            <li>
+                <span><strong>{{ task.title }}</strong> - {{ task.description }} - Status: {{ task.status }}</span>
+                <a href="{% url 'task_update' task.pk %}">Editar</a>
+                <form action="{% url 'task_delete' task.pk %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Deletar</button>
+                </form>
+            </li>
         {% endfor %}
     </ul>
-    
+
     <!-- Formulario de Filtro -->
     <form method="GET" action="{% url 'task_list' %}">
         {{ form.as_p }} <!-- Renderiza o formulário de filtro -->

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta author="name" content="Alysson">
+    <title>Projeto Django - Dashboard</title>
+</head>
+<body>
+<h1>Dashboard - Todas as Tarefas</h1>
+
+<a href="{% url 'task_create' %}">Criar Nova Tarefa</a>
+<a href="{% url 'task_list' %}">Voltar para Minha Lista de Tarefas</a>
+<br>
+
+<ul>
+    {% for task in tasks %}
+        <li>
+            <span><strong>{{ task.title }}</strong> - {{ task.description }} - Status: {{ task.get_status_display }} - Atribuido a: {{ task.user }}</span>
+            <a href="{% url 'task_update' task.pk %}">Editar</a>
+        </li>
+    {% endfor %}
+</ul>
+
+<!-- Formulario de Filtro -->
+<form method="GET" action="{% url 'dashboard' %}">
+    {{ form.as_p }} <!-- Renderiza o formulário de filtro -->
+    <button type="submit">Filtrar</button>
+</form>
+
+</body>
+</html>

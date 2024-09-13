@@ -4,9 +4,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as login_django
 from django.contrib import messages
+from django.urls import reverse_lazy
+
 from .models import Task
 from .forms import TaskForm, TaskFilterForm
-
 
 
 #Função de cadastro
@@ -40,6 +41,7 @@ def cadastro(request):
             messages.error(request, f'Ocorreu um erro: {str(e)}')
             return render(request, 'cadastro.html')    
 
+
 #Função de login    
 def login(request):
     if request.method == 'GET':
@@ -69,11 +71,16 @@ def login(request):
             messages.error(request, f'Ocorreu um erro: {str(e)}')
             return render(request, 'login.html')
 
+
+def logout(request):
+    return redirect(reverse_lazy('login'))
+
+
 #lista de tarefas
 @login_required
 def task_list(request):
-    form = TaskFilterForm(request.GET) # Cria um formulário de filtro
-    tasks = Task.objects.filter(user=request.user) # Filtra as tarefas do usuário logado
+    form = TaskFilterForm(request.GET)  # Cria um formulário de filtro
+    tasks = Task.objects.filter(user=request.user)  # Filtra as tarefas do usuário logado
     
     if form.is_valid():
         status = form.cleaned_data.get('status')
@@ -82,6 +89,7 @@ def task_list(request):
             
     return render(request, 'task_list.html', {'tasks': tasks, 'form': form}) # task_list.html é a página de listagem de tarefas
 
+
 #Criar tarefa
 @login_required
 def task_create(request):
@@ -89,13 +97,15 @@ def task_create(request):
         form = TaskForm(request.POST) # Cria um formulário com os dados enviados pelo usuário
         if form.is_valid():
             task = form.save(commit=False) # Salva o formulário sem enviar ao banco de dados
-            task.user = request.user # Adiciona o usuário logado à tarefa
+            if not task.user:
+                task.user = request.user
             task.save() # Salva a tarefa no banco de dados
             messages.success(request, 'Tarefa criada com sucesso')
             return redirect('task_list') # Redireciona para a lista de tarefas
     else:
         form = TaskForm()
     return render(request, 'task_form.html', {'form': form}) # task_form.html é a página de formulário
+
 
 #Editar tarefa
 @login_required
@@ -111,12 +121,25 @@ def task_update(request, pk):
         form = TaskForm(instance=task)
     return render(request, 'task_form.html', {'form': form}) # task_form.html é a página de formulário
 
+
 #Deletar tarefa
 @login_required
 def task_delete(request, pk):
     task = get_object_or_404(Task, pk=pk, user=request.user) # Verifica se a tarefa pertence ao usuário logado
-    if request.method == 'POST':
+    confirm = request.GET.get('confirm')
+    if confirm == 'true':
         task.delete()
-        messages.success(request, 'Tarefa deletada com sucesso')
         return redirect('task_list')
-    return render(request, 'task_delete_confirm.html', {'task': task}) # task_delete_confirm.html é a página de confirmação de exclusão
+    return render(request, 'task_confirm_delete.html', {'task': task}) # task_delete_confirm.html é a página de confirmação de exclusão
+
+
+@login_required
+def dashboard(request):
+    form = TaskFilterForm(request.GET)
+    tasks = Task.objects.all()
+
+    if form.is_valid():
+        status = form.cleaned_data.get('status')
+        if status:
+            tasks = tasks.filter(status=status)
+    return render(request, 'dashboard.html', {'tasks': tasks, 'form': form})

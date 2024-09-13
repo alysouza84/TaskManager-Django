@@ -9,10 +9,7 @@
 <body>
     <h1>Deletar Tarefa</h1>
     <p>Você tem certeza que deseja deletar a tarefa "{{ task.title }}"?</p>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Sim, deletar</button>
-    </form>
+    <a href="{% url 'task_delete' task.pk %}?confirm=true">Sim, deletar</a>
     <a href="{% url 'task_list' %}">Cancelar</a>
 </body>
 </html>
