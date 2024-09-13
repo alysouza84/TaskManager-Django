@@ -6,11 +6,14 @@ O **Task Manager** é um projeto de gerenciamento de tarefas desenvolvido em Dja
 
 - **Cadastro de Usuários:** Os usuários podem se cadastrar na plataforma com um nome de usuário, e-mail e senha.
 - **Login:** Sistema de autenticação de usuários com suporte para login seguro.
+- **Logout:** Os usuários podem sair da plataforma com segurança.
+- **Dashboard** Pagina de consulta de todas as tarefas do sistema com filtros por status.
+- **lista de Tarefas:** Exibição de todas as tarefas do usuário, com opções para criar, editar, excluir e filtrar tarefas.
 - **Gerenciamento de Tarefas:**
-  - Criar novas tarefas com título, descrição e status.
+  - Criar novas tarefas com título, descrição, status e a atribuição.
   - Editar e atualizar tarefas existentes.
   - Excluir tarefas indesejadas.
-- **Filtro de Tarefas por Status:** Os usuários podem filtrar as tarefas com base no status (como "Pendente", "Em Progresso", "Concluído").
+- **Filtro de Tarefas por Status:** Os usuários podem filtrar as tarefas com base no status (como "Pendente", "Em Progresso", "Concluído", ou ver todas).
 
 ## Tecnologias Utilizadas
 
@@ -20,7 +23,7 @@ O **Task Manager** é um projeto de gerenciamento de tarefas desenvolvido em Dja
 
 ## Estrutura do Projeto
 
-AUTENTICACAO/
+TaskManager-Django/
 │
 ├── autenticacao/              # Diretório principal do projeto Django
 │   ├── __pycache__/           # Cache dos arquivos Python compilados
@@ -33,7 +36,16 @@ AUTENTICACAO/
 ├── usuarios/                  # App de gerenciamento de usuários
 │   ├── __pycache__/           # Cache dos arquivos Python compilados
 │   ├── migrations/            # Diretório para arquivos de migração do Django
+│   ├── static/                # Arquivos estáticos (CSS, JavaScript, imagens)
+│   │   ├── css/               # Arquivos CSS
+│   │   │   ├── style.css      # Estilos CSS personalizados
 │   ├── templates/             # Templates HTML relacionados aos usuários
+│   │   ├──cadastro.html       # Formulário de cadastro de usuários
+│   │   ├──login.html          # Formulário de login de usuários
+│   │   ├──dashboard.html      # Página principal do usuário
+│   │   ├──task_confirm_delete.html # Página de confirmação de exclusão de tarefas
+│   │   ├──task_form.html      # Formulário de criação e edição de tarefas
+│   │   ├──task_list.html      # Lista de tarefas do usuário
 │   ├── __init__.py            # Indica que o diretório é um módulo Python
 │   ├── admin.py               # Configurações para a interface administrativa do Django
 │   ├── apps.py                # Configurações do aplicativo Django
