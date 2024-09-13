@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-BR">
     <head>
@@ -5,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta author="name" content="Alysson">
         <title>Projeto Django - Cadastro</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
     <body>
     
@@ -17,7 +20,6 @@
       {% endfor %}
     {% endif %} -->
 
-        <h1>Cadastro de Usuário...</h1>
         <form action="{% url 'cadastro' %}" method="post">
             {% csrf_token %} <!-- Token de segurança -->
             <label for="nome">Nome:</label>
@@ -29,8 +31,9 @@
             <label for="senha">Senha:</label>
             <input type="password" name="password" required>
             <input type="submit" value="Registrar">
+            <br>
+            <a href="{% url 'login' %}">Já possui uma conta? Faça login</a>
         </form>
         <br>
-        <a href="{% url 'login' %}">Já possui uma conta? Faça login</a>
     </body>
 </html>

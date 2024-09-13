@@ -1,38 +1,51 @@
-<!DOCTYPE>
+{% load static %}
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta author="name" content="Alysson">
+    <meta name="author" content="Alysson">
     <title>Projeto Django - Lista de Tarefas</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h1>Suas Tarefas</h1>
+    <div class="container">
+        <h1>Minhas Tarefas</h1>
+        <p>Olá, {{ user.username }}!</p>
+        <!-- Formulário de Filtro -->
+        <form method="GET" action="{% url 'task_list' %}" class="filter-form">
+            {{ form.as_p }}
+            <button type="submit">Filtrar</button>
+        </form>
 
+        <!-- Lista de Tarefas -->
+        {% if tasks %}
+            <ul class="task-list">
+                {% for task in tasks %}
+                <li>
+                    <span class="task-title">{{ task.title }}</span>
+                    <span class="task-description">{{ task.description }}</span>
+                    <span class="task-status">Status: {{ task.status }}</span>
+                    <div class="task-actions">
+                        <a href="{% url 'task_update' task.pk %}" class="btn btn-edit">Editar</a>
+                        <form action="{% url 'task_delete' task.pk %}" method="post" class="delete-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-delete">Deletar</button>
+                        </form>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Você não tem tarefas cadastradas.</p>
+        {% endif %}
 
-    <a href="{% url 'task_create' %}">Criar Nova Tarefa</a>
-    <a href="{% url 'dashboard' %}">Dashboard</a>
-    <a href="{% url 'logout' %}">Logout</a> 
-    <br>
-
-    <ul>
-        {% for task in tasks %}
-            <li>
-                <span><strong>{{ task.title }}</strong> - {{ task.description }} - Status: {{ task.status }}</span>
-                <a href="{% url 'task_update' task.pk %}">Editar</a>
-                <form action="{% url 'task_delete' task.pk %}" method="post" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit">Deletar</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
-
-    <!-- Formulario de Filtro -->
-    <form method="GET" action="{% url 'task_list' %}">
-        {{ form.as_p }} <!-- Renderiza o formulário de filtro -->
-        <button type="submit">Filtrar</button>
-    </form>
-
+        <!-- Links de Navegação -->
+        <div class="nav-links">
+            <a href="{% url 'task_create' %}" class="btn btn-primary">Criar Nova Tarefa</a>
+            <a href="{% url 'dashboard' %}" class="btn">Dashboard</a>
+            <a href="{% url 'logout' %}" class="btn">Logout</a>
+        </div>
+    </div>
 </body>
 </html>

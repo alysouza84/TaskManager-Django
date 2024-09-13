@@ -1,15 +1,27 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta author="name" content="Alysson">
-    <title>Deletar Tarefa</title>
+    <meta name="author" content="Alysson">
+    <title>Deletar Tarefa - {{ task.title }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h1>Deletar Tarefa</h1>
-    <p>Você tem certeza que deseja deletar a tarefa "{{ task.title }}"?</p>
-    <a href="{% url 'task_delete' task.pk %}?confirm=true">Sim, deletar</a>
-    <a href="{% url 'task_list' %}">Cancelar</a>
+    <div class="container">
+        <h1>Deletar Tarefa</h1>
+        <div class="delete-confirmation">
+            <p>Você tem certeza que deseja deletar a tarefa "<strong>{{ task.title }}</strong>"?</p>
+            <div class="task-preview">
+                <p><strong>Descrição:</strong> {{ task.description }}</p>
+                <p><strong>Status:</strong> {{ task.get_status_display }}</p>
+            </div>
+        </div>
+        <div class="action-buttons">
+            <a href="{% url 'task_delete' task.pk %}?confirm=true" class="btn btn-delete">Deletar</a>
+            <a href="{% url 'task_list' %}" class="btn">Cancelar</a>
+        </div>
+    </div>
 </body>
 </html>

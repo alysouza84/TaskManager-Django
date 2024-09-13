@@ -1,32 +1,45 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta author="name" content="Alysson">
+    <meta name="author" content="Alysson">
     <title>Projeto Django - Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-<h1>Dashboard - Todas as Tarefas</h1>
+    <div class="container">
+        <h1>Dashboard - Todas as Tarefas</h1>
 
-<a href="{% url 'task_create' %}">Criar Nova Tarefa</a>
-<a href="{% url 'task_list' %}">Voltar para Minha Lista de Tarefas</a>
-<br>
+        <div class="nav-links">
+            <a href="{% url 'task_create' %}" class="btn">Criar Nova Tarefa</a>
+            <a href="{% url 'task_list' %}" class="btn">Minha Lista de Tarefas</a>
+        </div>
 
-<ul>
-    {% for task in tasks %}
-        <li>
-            <span><strong>{{ task.title }}</strong> - {{ task.description }} - Status: {{ task.get_status_display }} - Atribuido a: {{ task.user }}</span>
-            <a href="{% url 'task_update' task.pk %}">Editar</a>
-        </li>
-    {% endfor %}
-</ul>
+        <!-- Formulário de Filtro -->
+        <form method="GET" action="{% url 'dashboard' %}" class="filter-form">
+            {{ form.as_p }}
+            <button type="submit">Filtrar</button>
+        </form>
 
-<!-- Formulario de Filtro -->
-<form method="GET" action="{% url 'dashboard' %}">
-    {{ form.as_p }} <!-- Renderiza o formulário de filtro -->
-    <button type="submit">Filtrar</button>
-</form>
-
+        {% if tasks %}
+            <ul class="task-list dashboard-list">
+                {% for task in tasks %}
+                    <li>
+                        <span class="task-title">{{ task.title }}</span>
+                        <span class="task-description">{{ task.description }}</span>
+                        <span class="task-status">Status: {{ task.get_status_display }}</span>
+                        <span class="task-user">Atribuído a: {{ task.user }}</span>
+                        <div class="task-actions">
+                            <a href="{% url 'task_update' task.pk %}" class="btn btn-edit">Editar</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Não há tarefas para exibir.</p>
+        {% endif %}
+    </div>
 </body>
 </html>

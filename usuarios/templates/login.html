@@ -1,3 +1,4 @@
+{% load static %} <!-- Carrega arquivos estáticos -->
 <!DOCTYPE html>
 <html lang="pt-BR">
     <head>
@@ -5,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="Alysson">
         <title>Projeto Django - Login</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
     <body>
-        <h1>Login</h1>
         <form action="{% url 'login' %}" method="POST"> 
             {% csrf_token %} <!-- Token de segurança -->
             <label for="username">Usuário:</label>

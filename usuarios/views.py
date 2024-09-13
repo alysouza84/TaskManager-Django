@@ -5,10 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as login_django
 from django.contrib import messages
 from django.urls import reverse_lazy
-
+from django.contrib.auth import logout as auth_logout
 from .models import Task
 from .forms import TaskForm, TaskFilterForm
-
 
 #Função de cadastro
 def cadastro(request):
@@ -41,7 +40,6 @@ def cadastro(request):
             messages.error(request, f'Ocorreu um erro: {str(e)}')
             return render(request, 'cadastro.html')    
 
-
 #Função de login    
 def login(request):
     if request.method == 'GET':
@@ -71,10 +69,10 @@ def login(request):
             messages.error(request, f'Ocorreu um erro: {str(e)}')
             return render(request, 'login.html')
 
-
+#Função de logout
 def logout(request):
-    return redirect(reverse_lazy('login'))
-
+    auth_logout(request) # Função de logout do Django
+    return redirect('cadastro') # Redireciona para a página de cadastro
 
 #lista de tarefas
 @login_required
@@ -87,25 +85,25 @@ def task_list(request):
         if status:
             tasks = tasks.filter(status=status)
             
-    return render(request, 'task_list.html', {'tasks': tasks, 'form': form}) # task_list.html é a página de listagem de tarefas
-
+    return render(request, 'task_list.html', 
+                  {'tasks': tasks, 
+                   'form': form, 
+                   'username': request.user.username}) # task_list.html é a página de listagem de tarefas
 
 #Criar tarefa
 @login_required
 def task_create(request):
     if request.method == 'POST':
-        form = TaskForm(request.POST) # Cria um formulário com os dados enviados pelo usuário
+        form = TaskForm(request.POST) # Envia o usuário logado para o formulário
         if form.is_valid():
             task = form.save(commit=False) # Salva o formulário sem enviar ao banco de dados
-            if not task.user:
-                task.user = request.user
+            task.user = request.user # Adiciona o usuário logado à tarefa
             task.save() # Salva a tarefa no banco de dados
             messages.success(request, 'Tarefa criada com sucesso')
             return redirect('task_list') # Redireciona para a lista de tarefas
     else:
         form = TaskForm()
-    return render(request, 'task_form.html', {'form': form}) # task_form.html é a página de formulário
-
+    return render(request, 'task_form.html', {'form': form}) # renderiza a pagina com o formulário
 
 #Editar tarefa
 @login_required
@@ -121,7 +119,6 @@ def task_update(request, pk):
         form = TaskForm(instance=task)
     return render(request, 'task_form.html', {'form': form}) # task_form.html é a página de formulário
 
-
 #Deletar tarefa
 @login_required
 def task_delete(request, pk):
@@ -131,7 +128,6 @@ def task_delete(request, pk):
         task.delete()
         return redirect('task_list')
     return render(request, 'task_confirm_delete.html', {'task': task}) # task_delete_confirm.html é a página de confirmação de exclusão
-
 
 @login_required
 def dashboard(request):
