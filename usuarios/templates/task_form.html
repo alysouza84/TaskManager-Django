@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta author="name" content="Alysson">
+    <title>Projeto Django - Formulário de Tarefa</title>
+</head>
+<body>
+    <h1>{% if form.instance.pk %}Editar Tarefa{% else %}Criar Nova Tarefa{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="{% url 'task_list' %}">Voltar para a lista de tarefas</a>
+</body>
+</html>

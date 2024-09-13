@@ -1,0 +1,37 @@
+<!DOCTYPE>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta author="name" content="Alysson">
+    <title>Projeto Django - Lista de Tarefas</title>
+</head>
+<body>
+    <h1>Suas Tarefas</h1>
+    
+    
+    <a href="{% url 'task_create' %}">Criar Nova Tarefa</a>
+    <br>
+    
+    <ul>
+        {% for task in tasks %}
+        <li>
+            <strong>{{ task.title }}</strong> - Status: {{ task.status }}<br>
+            {{ task.description }}<br>
+            <a href="{% url 'task_update' task.pk %}">Editar</a>
+            <form action="{% url 'task_delete' task.pk %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Deletar</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    
+    <!-- Formulario de Filtro -->
+    <form method="GET" action="{% url 'task_list' %}">
+        {{ form.as_p }} <!-- Renderiza o formulário de filtro -->
+        <button type="submit">Filtrar</button>
+    </form>
+
+</body>
+</html>

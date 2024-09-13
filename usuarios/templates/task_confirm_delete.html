@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta author="name" content="Alysson">
+    <title>Deletar Tarefa</title>
+</head>
+<body>
+    <h1>Deletar Tarefa</h1>
+    <p>Você tem certeza que deseja deletar a tarefa "{{ task.title }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sim, deletar</button>
+    </form>
+    <a href="{% url 'task_list' %}">Cancelar</a>
+</body>
+</html>
