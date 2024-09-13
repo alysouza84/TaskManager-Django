@@ -129,6 +129,7 @@ def task_delete(request, pk):
         return redirect('task_list')
     return render(request, 'task_confirm_delete.html', {'task': task}) # task_delete_confirm.html é a página de confirmação de exclusão
 
+#Dashboard
 @login_required
 def dashboard(request):
     form = TaskFilterForm(request.GET)

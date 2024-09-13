@@ -1,7 +1,6 @@
 from django import forms
 from .models import Task
 
-
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
@@ -12,7 +11,6 @@ class TaskForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if user:
             self.instance.user = user # Define o usuário atual como o usuário da tarefa
-
 
 class TaskFilterForm(forms.Form):
     status = forms.ChoiceField(
