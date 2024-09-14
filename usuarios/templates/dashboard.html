@@ -30,6 +30,7 @@
                         <span class="task-title">{{ task.title }}</span>
                         <span class="task-description">{{ task.description }}</span>
                         <span class="task-status">Status: {{ task.get_status_display }}</span>
+                        <br>
                         <span class="task-user">Atribuído a: {{ task.user }}</span>
                         <div class="task-actions">
                             <a href="{% url 'task_update' task.pk %}" class="btn btn-edit">Editar</a>

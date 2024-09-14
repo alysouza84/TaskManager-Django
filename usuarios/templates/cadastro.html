@@ -35,5 +35,15 @@
             <a href="{% url 'login' %}">Já possui uma conta? Faça login</a>
         </form>
         <br>
+      
+      <script>
+          document.addEventListener('DOMContentLoaded', (event) => {
+              {% if messages %}
+                  {% for message in messages %}
+                      alert("{{ message|escapejs }}");
+                  {% endfor %}
+              {% endif %}
+          });
+      </script>
     </body>
 </html>

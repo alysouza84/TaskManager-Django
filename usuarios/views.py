@@ -15,6 +15,7 @@ def cadastro(request):
         return render(request, 'cadastro.html')
     else:
         try:
+            # Recebe os dados do formulário
             username = request.POST.get('username')
             email = request.POST.get('email')
             senha = request.POST.get('password')
@@ -39,6 +40,7 @@ def cadastro(request):
             # Captura qualquer exceção e exibe uma mensagem de erro
             messages.error(request, f'Ocorreu um erro: {str(e)}')
             return render(request, 'cadastro.html')    
+
 
 #Função de login    
 def login(request):
@@ -126,6 +128,7 @@ def task_delete(request, pk):
     confirm = request.GET.get('confirm')
     if confirm == 'true':
         task.delete()
+        messages.success(request, 'Tarefa deletada com sucesso')
         return redirect('task_list')
     return render(request, 'task_confirm_delete.html', {'task': task}) # task_delete_confirm.html é a página de confirmação de exclusão
 

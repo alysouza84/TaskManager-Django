@@ -21,5 +21,16 @@
             <br>
             <a href="{% url 'cadastro' %}">Não possui uma conta? Faça Cadastro</a>
         </form>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                {% if messages %}
+                    {% for message in messages %}
+                        alert("{{ message|escapejs }}");
+                    {% endfor %}
+                {% endif %}
+            });
+        </script>
+    
     </body>
 </html>
