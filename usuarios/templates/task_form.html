@@ -36,5 +36,15 @@
             <a href="{% url 'task_list' %}" class="btn">Voltar para a lista de tarefas</a>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            {% if messages %}
+                {% for message in messages %}
+                    alert("{{ message|escapejs }}");
+                {% endfor %}
+            {% endif %}
+        });
+    </script>
 </body>
 </html>
